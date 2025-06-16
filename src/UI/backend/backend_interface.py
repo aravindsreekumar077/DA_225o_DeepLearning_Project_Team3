@@ -1,10 +1,24 @@
+# backend_interface.py
+
 from TOOLS.calculator import evaluate_expression
 from TOOLS.json_formatter import format_json_from_text
 from TOOLS.translator import translate_en_to_fr
+from TOOLS.scratchpad import ScratchpadManager
 
 class BackendInterface:
+    def __init__(self):
+        self.scratchpad = ScratchpadManager()
+
+    def toggle_scratchpad(self, status: bool):
+        return {"response": self.scratchpad.toggle(status)}
+
     def get_agent_response(self, prompt, file_text="", file_name=""):
         lowered = prompt.lower().strip()
+
+        if self.scratchpad.is_enabled():
+            self.scratchpad.add_note(lowered)
+            return {"response": ""}
+
 
         # Tool 1: JSON
         if "format this" in lowered:

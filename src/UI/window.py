@@ -8,7 +8,9 @@ from components.chat_input import render_chat_input
 class SLAMAppWindow:
     def __init__(self):
         # Backend API setup
-        self.agent_api = BackendInterface()
+        if "agent_api" not in st.session_state:
+            st.session_state.agent_api = BackendInterface()
+        self.agent_api = st.session_state.agent_api
         self._init_session_state()
 
     def _init_session_state(self):
