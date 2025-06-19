@@ -5,11 +5,13 @@ from components.title import render_title
 from components.chat_display import render_chat_history
 from components.chat_input import render_chat_input
 
+BACKEND_URL = "http://localhost:8000"  # Update with your backend URL
+
 class SLAMAppWindow:
     def __init__(self):
         # Backend API setup
         if "agent_api" not in st.session_state:
-            st.session_state.agent_api = BackendInterface()
+            st.session_state.agent_api = BackendInterface(BACKEND_URL)
         self.agent_api = st.session_state.agent_api
         self._init_session_state()
 
