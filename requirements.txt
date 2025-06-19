@@ -44,6 +44,3 @@ opencv-python-headless
 python-multipart
 openpyxl
 num2words
-peft
-transformers
-sentencepiece
