@@ -5,15 +5,17 @@ from components.title import render_title
 from components.chat_display import render_chat_history
 from components.chat_input import render_chat_input
 
-BACKEND_URL = "http://localhost:8000"  # Update with your backend URL
+BACKEND_URL = "http://fastapi-app:8000"  
 
 class SLAMAppWindow:
     def __init__(self):
-        # Backend API setup
+        self._init_backend()
+        self._init_session_state()
+
+    def _init_backend(self):
         if "agent_api" not in st.session_state:
             st.session_state.agent_api = BackendInterface(BACKEND_URL)
         self.agent_api = st.session_state.agent_api
-        self._init_session_state()
 
     def _init_session_state(self):
         if "chat_history" not in st.session_state:
