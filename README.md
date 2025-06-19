@@ -29,7 +29,7 @@ OPEN APP  : http://localhost:8501
 
 ```
 
-### To build and run the backend on docker container
+### To build and run the UI on docker container
 
 ```
 
@@ -45,9 +45,3 @@ API request   : http://0.0.0.0:8000/ping
 cd src/deploy
 docker-compose up --build
 
-
-### Run the Backend server
-```
-cd src/BACKEND
-uvicorn main:app --reload
-```
