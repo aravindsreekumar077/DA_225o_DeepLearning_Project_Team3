@@ -1,6 +1,8 @@
 ##SLAM-Backend##
+
 from pydantic import BaseModel
-from TOOLS.OCR import get_ocr_text
+import os
+from src.TOOLS.OCR import  get_ocr_text
 from fastapi import FastAPI, UploadFile, File, HTTPException
 
 
@@ -36,7 +38,7 @@ class Query(BaseModel):
 
 @app.get("/ping")
 def ping():
-    return {"response": "Hi , SLAM backend is up and running"}
+    return {"message": "Hi , SLAM backend is up and running"}
 
 
 @app.post("/OCR")
@@ -46,16 +48,16 @@ async def get_ocr(image: UploadFile = File(...)):
 
 @app.post("/calculator")
 def calculate():
-    return {"response": "Hi , Placeholder for calculator"}
+    return {"message": "Hi , Placeholder for calculator"}
 
 
 @app.post("/json_formatter")
 def json_format():
-    return {"response": "Hi , Placeholder for json_formatter"}
+    return {"message": "Hi , Placeholder for json_formatter"}
 
 @app.post("/translator")
 def translator(text: str):
-    return {"response": f"Hi , Placeholder for translator-{text}"}
+    return {"message": f"Hi , Placeholder for translator-{text}"}
 
 #Inference code for model
 '''
