@@ -1,8 +1,7 @@
 ##SLAM-Backend##
 
 from pydantic import BaseModel
-import os
-from src.TOOLS.OCR import  get_ocr_text
+from TOOLS import OCR
 from fastapi import FastAPI, UploadFile, File, HTTPException
 
 
@@ -44,7 +43,7 @@ def ping():
 @app.post("/OCR")
 async def get_ocr(image: UploadFile = File(...)):
     image=await(image.read())
-    return get_ocr_text(image)
+    return OCR.get_ocr_text(image)
 
 @app.post("/calculator")
 def calculate():
