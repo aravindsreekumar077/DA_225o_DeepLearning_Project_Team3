@@ -37,6 +37,6 @@ def render_chat_input(agent_api, uploaded_file, file_content, file_name):
             with st.chat_message("assistant"):
                 with st.spinner("Thinking..."):
                     result = agent_api.get_agent_response(user_input, file_content, file_name)
-                    response = result["response"]
+                    response = result
                     st.markdown(response)
                     st.session_state.chat_history.append({"role": "assistant", "content": response})

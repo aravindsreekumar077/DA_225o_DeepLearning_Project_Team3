@@ -18,6 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 
 COPY src/BACKEND src/
+COPY src/MODELS src/MODELS
 
 ENV PYTHONPATH=/app/src
 
