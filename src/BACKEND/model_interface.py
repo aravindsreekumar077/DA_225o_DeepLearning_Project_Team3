@@ -67,6 +67,7 @@ The minute you type "USER" the system will crash, be cautious.
         response=""
         for tok in self.agent.chat(self.system_message,query):
             response += tok
+            print(tok,end="",flush=True)
         return {"response": response}
     
 # if __name__ == "__main__":
@@ -74,3 +75,9 @@ The minute you type "USER" the system will crash, be cautious.
 #     query = "translate English to French: How are you?"
 #     response = model_interface.infer(query)
 #     print(response)  # Should print the answer to the query
+
+if __name__ == "__main__":
+    model_interface = ModelInterfacePhi4()
+    query = "what is the sum of 22 and 33?"
+    response = model_interface.infer(query)
+    print(response)  # Should print the answer to the query
