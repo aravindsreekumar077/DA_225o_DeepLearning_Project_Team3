@@ -33,6 +33,8 @@ def calculate(query : str):
 @app.post("/json_formatter")
 def json_format(query: str = None):
     return {"response": query}
+def json_format(query: str = None):
+    return {"response": query}
 
 @app.post("/translator")
 def translator(text: str):
