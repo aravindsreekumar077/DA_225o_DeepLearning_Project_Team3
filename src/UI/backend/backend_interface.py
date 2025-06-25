@@ -1,6 +1,8 @@
 import requests
 import logging
 
+
+
 class BackendInterface:
     def __init__(self, backend_url: str):
         self.backend_url = backend_url
@@ -65,6 +67,13 @@ class BackendInterface:
         response=classify_response.get("response", "")
         self.logger.info(f"Response from classify: {response}")
         #call tool endpoints based on classification tool in string
+        # {
+        #     raw_query:
+        #     t5_query
+        # } --> phi4
+
+        # phi4--> response 
+        response
         if "calculate" in response.lower():
             response = self.calculate(response)
         elif "json" in response.lower():

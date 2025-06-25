@@ -1,0 +1,15 @@
+{
+    "tools": [
+        {
+            "name": "get_weather_updates",
+            "description": "Fetches weather updates for a given city using the RapidAPI Weather API.",
+            "parameters": {
+                "city": {
+                    "description": "The name of the city for which to retrieve weather information.",
+                    "type": "str",
+                    "default": "London"
+                }
+            }
+        },
+    ]
+}
