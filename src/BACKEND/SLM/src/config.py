@@ -18,7 +18,7 @@ MODELS_DIR.mkdir(exist_ok=True)
 # Default model settings
 DEFAULT_MODEL_CONFIG = ModelConfig(
     source=ModelSource.LOCAL,
-    model_path=MODELS_DIR / "model.bin",  # Change this to your model path
+    model_path=MODELS_DIR / "Phi-4-mini-instruct-Q5_K_M.gguf",  # Change this to your model path
     model_type="llama",
     context_size=2048,
     verbose=False,

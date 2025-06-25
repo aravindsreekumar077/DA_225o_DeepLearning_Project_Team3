@@ -4,7 +4,7 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 from peft import PeftModel, PeftConfig
 import torch
 from SLM.src.agentic import Agent 
-from SLM.src.config import get_pretrained_config
+from SLM.src.config import get_pretrained_config,get_default_config
 
 
 class ModelInterfaceT5:
@@ -28,8 +28,9 @@ class ModelInterfaceT5:
     
 class ModelInterfacePhi4:
     def __init__(self):
-        self.config = get_pretrained_config(repo_id="unsloth/Phi-4-mini-instruct-GGUF",
-                            filename="Phi-4-mini-instruct-Q5_K_M.gguf")
+        # self.config = get_pretrained_config(repo_id="unsloth/Phi-4-mini-instruct-GGUF",
+        #                     filename="src/SLM/models/Phi-4-mini-instruct-Q5_K_M.gguf")
+        self.config= get_default_config()
         self.config.model.use_prompt=False
         self.agent=Agent(self.config)
         self.system_message=  """

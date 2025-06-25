@@ -8,6 +8,8 @@ from .exceptions import ModelInitializationError, GenerationError, ErrorCode
 from ..utils.sanity_checker import SanityChecker
 from ..prompt_handling import PromptHandler
 
+model_path_phi4="src/SLM/models/Phi-4-mini-instruct-Q5_K_M.gguf"
+
 class SLMRunner:
     """Main class for running Structured Language Models using llama.cpp."""
     
@@ -94,9 +96,17 @@ class SLMRunner:
             if self.config.model.is_pretrained:
                 print(f"Loading pretrained model from {self.config.model.pretrained.repo_id}")
                 self.logger.info(f"Loading pretrained model from {self.config.model.pretrained.repo_id}")
-                self.model = Llama.from_pretrained(
-                    repo_id=self.config.model.pretrained.repo_id,
-                    filename=self.config.model.pretrained.filename,
+                # self.model = Llama.from_pretrained(
+                #     repo_id=self.config.model.pretrained.repo_id,
+                #     filename=self.config.model.pretrained.filename,
+                #     n_ctx=self.config.model.context_size,
+                #     n_threads=self.config.hardware.n_threads,
+                #     n_gpu_layers=self.config.hardware.n_gpu_layers,
+                #     verbose = self.config.model.verbose,
+                #     **self.config.model_kwargs
+                # )
+                self.model = Llama(
+                    model_path=model_path_phi4,
                     n_ctx=self.config.model.context_size,
                     n_threads=self.config.hardware.n_threads,
                     n_gpu_layers=self.config.hardware.n_gpu_layers,
