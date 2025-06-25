@@ -21,3 +21,6 @@ services:
       - CMAKE_ARGS="-DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS"
       - CC=/usr/bin/gcc
       - CXX=/usr/bin/g++
+    dns:
+     - 8.8.8.8
+    
