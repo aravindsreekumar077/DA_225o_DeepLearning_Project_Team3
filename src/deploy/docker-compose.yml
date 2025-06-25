@@ -8,6 +8,7 @@ services:
       - "8501:8501"
     environment:
       - PYTHONPATH=/app/src
+   
 
   fastapi-app:
     build:
@@ -17,3 +18,9 @@ services:
       - "8000:8000"
     environment:
       - PYTHONPATH=/app/src
+      - CMAKE_ARGS="-DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS"
+      - CC=/usr/bin/gcc
+      - CXX=/usr/bin/g++
+    dns:
+     - 8.8.8.8
+    

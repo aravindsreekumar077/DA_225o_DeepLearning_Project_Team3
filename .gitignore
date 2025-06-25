@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+.DS_Store
 # C extensions
 *.so
 
@@ -195,3 +195,4 @@ cython_debug/
 
 #adding venv for ignore
 DL-PROJECT/*
+*.gguf

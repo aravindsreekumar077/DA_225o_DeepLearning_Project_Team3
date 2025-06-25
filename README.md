@@ -1,53 +1,120 @@
-# DA_225o_DeepLearning_Project_Team3
-SLAM (Small Language Agentic Machine)
+# SLAM • Small Language Agentic Machine
 
-## Local setup for the python virtual env
+ **Agent-like reasoning**  **Modular tools** **Fully offline**  
+ A two-stage, local-first assistant that rewrites, reasons … and runs your tools without the cloud.
 
+---
+
+##  Abstract
+SLAM couples an **adapter-tuned T5 rewriter** with a **small decoder-only generator** (Phi-4-mini).  
+A lean in-process controller validates JSON tool calls, executes a sandboxed registry (calculator, OCR, summariser, …), and inserts each result back into the generation flow. Everything runs locally; no external APIs are required.
+
+---
+
+##  Project Structure
+```text
+.
+├── src/                  # core backend, SLM, tool registry, UI
+│   ├── BACKEND/          # FastAPI server + controller logic
+│   ├── MODELS/           # gguf + LoRA adapters
+│   └── UI/               # Streamlit chat front-end
+├── notebooks/            # data-generation + analysis
+├── data/                 # synthetic & real training data
+├── deploy/               # Docker / Compose / k8s manifests
+└── README.md
 ```
-python3 -m venv DL-PROJECT
-source DL-PROJECT/bin/activate
+
+
+
+# 1 – Python venv
+```
+python3 -m venv slam-env && source slam-env/bin/activate
 pip install -r requirements.txt
-
 ```
 
-## Running the project
-
-### To run the streamlit app locally
-
-```
-cd src/UI
-streamlit run main.py
-```
-
-### To build and run the UI on docker container
-
-```
-
-docker build -f src/deploy/container-ui/Dockerfile -t slam-ui-app .
-docker run -p 8501:8501 slam-ui-app
-OPEN APP  : http://localhost:8501
-
-```
-
-### To build and run the backend on docker container
-
-```
-
-docker build -f src/deploy/container-backend/Dockerfile -t slam-backend-app .
-docker run -p 8000:8000 slam-backend-app
-API request   : http://0.0.0.0:8000/ping
-
-```
-
-### To run the entire project containers using docker-compose
-
-```
-cd src/deploy
-docker-compose up --build
-
-
-### Run the Backend server
+# 2 – Run backend
 ```
 cd src/BACKEND
-uvicorn main:app --reload
+uvicorn main:app --reload                 # → http://localhost:8000/docs
 ```
+
+# 3 – Run Streamlit UI (new terminal)
+```
+cd ../../UI
+streamlit run main.py                     # → http://localhost:8501
+```
+
+
+
+##  Features
+
+- Category What it gives you
+- Two-stage pipeline T5 ⇒ concise instruction → SLM reasoner
+- Modular tools Calculator · Python shell · OCR · Summariser …
+- Schema-first safety Strict JSON validation ⇢ no silent injection
+- Adapter fine-tuning LoRA on T5 Base (≈ 11 M trainable params)
+- Privacy-first No data leaves your machine
+
+
+
+
+##  Data Generation
+- 10 k seed tasks → 5 paraphrases each via GPT-3.5
+- Automatic rewrite into imperative form
+- Manual profanity / schema filter
+
+
+
+
+
+##  Prompt-Engineering Heuristics
+- Use <|user|> / <|assistant|> BPE split tokens to stop generation.
+- Force low-temperature (0.2) inside “tool” blocks; higher (0.7) elsewhere.
+
+
+##  Evaluation
+
+### 1 – Base vs Fine-tuned (rewriter)
+
+![Base vs fine tuned model performance](./pics/imag1.png)
+
+| Metric      | Base | Fine-tuned |
+|-------------|-------|------------|
+| ROUGE-1     | 0.40  | 0.98       |
+| ROUGE-2     | 0.27  | 0.95       |
+| ROUGE-L     | 0.40  | 0.98       |
+| ROUGE-L_sum | 0.40  | 0.98       |
+| BLEU        | 0.38  | 0.89       |
+
+### 2 – Prompt-Rewriting Summary
+
+| Metric      | Score | Interpretation                                   |
+|-------------|-------|--------------------------------------------------|
+| BLEU       | 0.48  | 🟡 Moderate token overlap – expected re-phrasing |
+| BERTScore   | 0.99  | 🟢 Near-perfect semantic fidelity                 |
+| METEOR      | 0.76  | 🟢 Good synonym/ordering match                    |
+| ROUGE-L     | 0.99  | 🟢 Excellent structural alignment                  |
+
+
+
+### 3 Training Loss against Epochs
+![Training Loss](./pics/lost_epoch.png)
+
+Insights
+ • High BERTScore + ROUGE-L ⇒ intent & structure preserved — ideal for tool routing.
+ • Moderate BLEU shows healthy paraphrasing, not verbatim copying.
+
+
+## Screenshots
+### SLAM UI
+![SLAM UI](./pics/image.png)
+### Tool Registry on fastapi
+![Tool Registry](./pics/Screenshot%202025-06-25%20at%2010.31.46 PM.png)
+### FastAPI logs when running SLAM for tool calling
+![FastAPI logs](./pics/Screenshot%202025-06-25%20at%2010.06.51 PM.png)
+
+
+
+## Contributors
+
+Aravind SS · Manoj Kokane · Parth Bhatia · Sachin Bansal · Srividhya L · Swapnil Trivedi

@@ -1,6 +1,8 @@
 import requests
 import logging
 
+
+
 class BackendInterface:
     def __init__(self, backend_url: str):
         self.backend_url = backend_url
@@ -42,6 +44,13 @@ class BackendInterface:
             return response.json()
         except Exception as e:
             return {"error": str(e)}    
+    def infer_slam(self, input_text: str):
+        try:
+            payload = {"input_text": input_text}
+            response = requests.post(f"{self.backend_url}/slam", json=payload)
+            return response.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     def get_agent_response(self, user_input: str, file_bytes: bytes = None, file_name: str = None):
         """
@@ -65,14 +74,27 @@ class BackendInterface:
         response=classify_response.get("response", "")
         self.logger.info(f"Response from classify: {response}")
         #call tool endpoints based on classification tool in string
-        if "calculate" in response.lower():
-            response = self.calculate(response)
-        elif "json" in response.lower():
-            response = self.json_format(response)
-        elif "translator" in response.lower():
-            response = self.translator(response)
-        elif "ocr" in response.lower() and file_bytes is not None and file_name is not None:
-            response = self.get_ocr(file_name, file_bytes)
-        else:
-            response = {"response": "No valid tool found for the input."}
-        return response.get("response", "")
+        # {
+        #     raw_query:
+        #     t5_query
+        # } --> phi4
+
+        # phi4--> response 
+        query= "{} simplified to {}".format(user_input,response)
+        phi_response=self.infer_slam(query)
+        self.logger.info(f"Response from SLAM: {phi_response}")
+
+        # response
+        # if "calculate" in response.lower():
+        #     response = self.calculate(response)
+        # elif "json" in response.lower():
+        #     response = self.json_format(response)
+        # elif "translator" in response.lower():
+        #     response = self.translator(response)
+        # elif "ocr" in response.lower() and file_bytes is not None and file_name is not None:
+        #     response = self.get_ocr(file_name, file_bytes)
+        # else:
+        #     response = {"response": "No valid tool found for the input."}
+        # return phi_response.get("response", "")
+        respons=phi_response.get("response", "")
+        return {"response":respons}

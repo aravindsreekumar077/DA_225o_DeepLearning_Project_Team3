@@ -80,14 +80,16 @@ def convert_words_to_expression(sentence):
 def evaluate_expression(user_input):
     lowered = user_input.lower().strip()
 
+    # Check if the input starts with "calculate"
     if lowered.startswith("calculate "):
-        expr = user_input.split("calculate", 1)[-1].strip()
+        expr = lowered[len("calculate "):].strip()  # Remove "calculate " part
         try:
             result = sympify(expr).evalf()
             return f"🧮 Result of `{expr}` is `{result}`"
         except (SympifyError, Exception) as e:
             return f"❌ Error evaluating expression:\n`{str(e)}`"
 
+    # Handle other types of expressions involving words like 'plus', 'minus', etc.
     if any(op in lowered for op in [
         "plus", "minus", "divided", "times", "multiply", "subtract",
         "difference", "between", "quotient", "sum", "product", "add"
