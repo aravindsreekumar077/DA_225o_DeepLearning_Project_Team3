@@ -3,12 +3,14 @@ from pydantic import BaseModel
 from TOOLS.OCR import get_ocr_text
 from TOOLS.calculator import evaluate_expression
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from model_interface import ModelInterfaceT5    
-from SLM.src.runner import SLAMRunner
+from model_interface import ModelInterfaceT5 , ModelInterfacePhi4    
+
 
 app = FastAPI()
 
 model_interface = ModelInterfaceT5()
+slm_runner = ModelInterfacePhi4()
+
 
 class Query(BaseModel):
     input_text: str
@@ -40,6 +42,14 @@ def translator(text: str):
 async def infer_t5(query: Query):
     try:
         response = model_interface.infer(query.input_text)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/slam")
+async def slam(query: Query):
+    try:
+        response = slm_runner.infer(query.input_text)
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

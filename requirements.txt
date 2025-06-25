@@ -18,6 +18,7 @@ datasets==3.6.0
 debugpy==1.8.14
 decorator==5.2.1
 dill==0.3.8
+diskcache==5.6.3
 dnspython==2.7.0
 email_validator==2.2.0
 executing==2.2.0
@@ -45,6 +46,7 @@ jsonschema==4.24.0
 jsonschema-specifications==2025.4.1
 jupyter_client==8.6.3
 jupyter_core==5.8.1
+llama_cpp_python==0.2.70
 markdown-it-py==3.0.0
 MarkupSafe==3.0.2
 matplotlib-inline==0.1.7
