@@ -1,6 +1,7 @@
 ##SLAM-Backend##
 from pydantic import BaseModel
 from TOOLS.OCR import get_ocr_text
+from TOOLS.calculator import evaluate_expression
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from model_interface import ModelInterfaceT5    
 
@@ -23,7 +24,8 @@ async def get_ocr(image: UploadFile = File(...)):
 
 @app.post("/calculator")
 def calculate(query : str):
-    return {"response": query} 
+    response = evaluate_expression(query)
+    return {"response": response} 
 
 @app.post("/json_formatter")
 def json_format(query: str = None):
