@@ -4,6 +4,7 @@ from TOOLS.OCR import get_ocr_text
 from TOOLS.calculator import evaluate_expression
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from model_interface import ModelInterfaceT5    
+from SLM.src.runner import SLAMRunner
 
 app = FastAPI()
 
